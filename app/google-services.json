@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1046447939324",
+    "project_id": "abifinal",
+    "storage_bucket": "abifinal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046447939324:android:4fbbfa0be93de4ec6bc179",
+        "android_client_info": {
+          "package_name": "com.abi.abifinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046447939324-b1mvm3a71o0i841qjflrsv31ha715gv0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxbAwUxAFAxCOsrmUTQPhwhe83E6-laqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046447939324-b1mvm3a71o0i841qjflrsv31ha715gv0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
