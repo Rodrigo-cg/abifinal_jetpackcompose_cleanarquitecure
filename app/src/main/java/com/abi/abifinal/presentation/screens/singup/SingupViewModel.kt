@@ -21,7 +21,7 @@ class SingupViewModel @Inject constructor(
     private val usersUseCases: UsersUseCases
 ) : ViewModel() {
 
-    var state by mutableStateOf(SingUpState())
+    var state by mutableStateOf(SingUpState(age = "",))
         private set
 
     var isUsernameValid by mutableStateOf(false)
@@ -44,6 +44,25 @@ class SingupViewModel @Inject constructor(
     var passwordErrorMessage by mutableStateOf("")
         private set
 
+    var isPhoneNumberValid by mutableStateOf(false)
+        private set
+    var phoneNumberErrMsg by mutableStateOf("")
+        private set
+
+    var isFullNameValid by mutableStateOf(false)
+        private set
+    var fullNameErrMsg by mutableStateOf("")
+        private set
+
+    var isAgeValid by mutableStateOf(false)
+        private set
+    var ageErrMsg by mutableStateOf("")
+        private set
+
+    var isDniValid by mutableStateOf(false)
+        private set
+    var dniErrMsg by mutableStateOf("")
+        private set
 
     var user = User()
 
@@ -60,9 +79,94 @@ class SingupViewModel @Inject constructor(
     fun onConfirmPasswordInput(passwordConfirm: String){
         state = state.copy(confirmPassword = passwordConfirm)
     }
+    fun onPhoneNumberInput(phoneNumber: String) {
+        state = state.copy(phoneNumber = phoneNumber)
+    }
+
+    fun onFullNameInput(fullName: String) {
+        state = state.copy(fullName = fullName)
+    }
+
+    fun onAgeInput(age: String) {
+        state = state.copy(age = age)
+    }
+    fun onDniInput(dni: String) {
+        state = state.copy(dni = dni)
+    }
 
     //Boton
     var isEnableButton: Boolean = false
+
+    fun validatePhoneNumber() {
+        val phoneNumber = state.phoneNumber
+
+        if (phoneNumber.isEmpty()) {
+            isPhoneNumberValid = false
+            phoneNumberErrMsg = "El número de teléfono es requerido"
+        } else if (!Patterns.PHONE.matcher(phoneNumber).matches()) {
+            isPhoneNumberValid = false
+            phoneNumberErrMsg = "Por favor ingresa un número de teléfono válido"
+        } else {
+            isPhoneNumberValid = true
+            phoneNumberErrMsg = ""
+        }
+
+        enableButton()
+    }
+
+    fun validateFullName() {
+        val fullName = state.fullName
+
+        if (fullName.isEmpty()) {
+            isFullNameValid = false
+            fullNameErrMsg = "El nombre completo es requerido"
+        } else if (fullName.length < 2) {
+            isFullNameValid = false
+            fullNameErrMsg = "Por favor ingresa un nombre válido"
+        } else {
+            isFullNameValid = true
+            fullNameErrMsg = ""
+        }
+
+        enableButton()
+    }
+    fun validateAge() {
+        val age = state.age
+
+        if (age.isEmpty()) {
+            ageErrMsg = "La edad es requerida"
+        } else {
+            val ageValue = age.toIntOrNull()
+            if (ageValue == null || ageValue < 0 || ageValue > 120) {
+                isAgeValid=false
+                ageErrMsg = "Por favor ingresa una edad válida"
+            } else {
+                isAgeValid=true
+                ageErrMsg = ""
+            }
+        }
+
+        enableButton()
+    }
+    fun validateDni() {
+        val dni = state.dni
+
+        if (dni.isEmpty()) {
+            ageErrMsg = "El dni es requerida"
+        } else {
+            if (dni.length==9) {
+                isDniValid= true
+                dniErrMsg = ""
+            } else {
+                isDniValid= false
+
+                dniErrMsg = "Por favor ingresa un dni válida"
+
+            }
+        }
+
+        enableButton()
+    }
     fun enableButton() {
         isEnableButton =
             isEmailValid && isPasswordValid && isUsernameValid && isConfirmPasswordValid

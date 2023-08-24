@@ -53,7 +53,7 @@ fun LoginContent(navController: NavController, viewModel: LoginViewModel = hiltV
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(270.dp)
+                .height(300.dp)
                 .background(Pink500),
         ) {
             Column(
@@ -62,20 +62,21 @@ fun LoginContent(navController: NavController, viewModel: LoginViewModel = hiltV
             ) {
                 Image(
                     modifier = Modifier
-                        .height(130.dp)
-                        .padding(top = 30.dp),
+                        .height(200.dp)
+                        .padding(top = 30.dp)
+                        .padding(bottom = 30.dp),
                     painter = painterResource(id = R.drawable.control),
                     contentDescription = "Control de Xbox 360"
                 )
 
-                Text(text = "Firebase MVVM")
+                Text(text = "Hola, soy ABI y estoy lista para ayudarte !")
             }
 
         }
 
         Card(
             colors = CardDefaults.cardColors(containerColor = DarkGray500),
-            modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 200.dp)
+            modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 280.dp)
         ) {
 
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
