@@ -169,7 +169,8 @@ class SingupViewModel @Inject constructor(
     }
     fun enableButton() {
         isEnableButton =
-            isEmailValid && isPasswordValid && isUsernameValid && isConfirmPasswordValid
+            isEmailValid && isPasswordValid && isUsernameValid && isConfirmPasswordValid && isAgeValid && isDniValid &&
+                    isFullNameValid && isPhoneNumberValid
     }
 
     fun validateConfirmPassword() {
@@ -200,7 +201,10 @@ class SingupViewModel @Inject constructor(
         user.username = state.username
         user.email = state.email
         user.password = state.passwoord
-
+        user.age=state.age
+        user.phoneNumber=state.phoneNumber
+        user.dni=state.dni
+        user.fullName=state.fullName
 
         singUp(user)
 

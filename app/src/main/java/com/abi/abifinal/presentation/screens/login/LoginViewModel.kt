@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val authUseCase: AuthUseCase): ViewModel() {
+class LoginViewModel @Inject constructor(private val authUseCase: AuthUseCase,): ViewModel() {
 
     //State Form
     var state by mutableStateOf(LoginState())

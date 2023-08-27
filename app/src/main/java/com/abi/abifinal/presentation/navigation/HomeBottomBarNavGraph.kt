@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.abi.abifinal.presentation.screens.profile.ProfileScreen
 
 @Composable
 fun HomeBottomBarNavGraph(navController: NavHostController) {
@@ -19,7 +20,7 @@ fun HomeBottomBarNavGraph(navController: NavHostController) {
     ){
 
         composable(route = HomeBottomBarScreen.Profile.route){
-            //ProfileScreen(navController)
+            ProfileScreen(navController)
         }
 
         composable(route = HomeBottomBarScreen.Posts.route){
@@ -30,7 +31,7 @@ fun HomeBottomBarNavGraph(navController: NavHostController) {
             //MyPostsScreen(navController)
         }
 
-        //detailsNavGraph(navController)
+        detailsNavGraph(navController)
     }
 
 }
@@ -43,13 +44,13 @@ sealed class HomeBottomBarScreen(
 
     object Posts : HomeBottomBarScreen(
         route = "posts_list",
-        tittle = "Publicaciones",
+        tittle = "Auxilio",
         icon = Icons.Outlined.List
     )
 
     object MyPosts : HomeBottomBarScreen(
         route = "my_posts",
-        tittle = "Mis Publicaciones",
+        tittle = "Dashboard",
         icon = Icons.Outlined.List
     )
 

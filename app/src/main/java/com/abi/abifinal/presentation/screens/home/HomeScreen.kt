@@ -1,6 +1,7 @@
 package com.abi.abifinal.presentation.screens.home
 
 import android.annotation.SuppressLint
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -12,20 +13,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.abi.abifinal.presentation.navigation.HomeBottomBarNavGraph
 import com.abi.abifinal.presentation.navigation.HomeBottomBarScreen
+import com.abi.abifinal.presentation.screens.login.LoginViewModel
+import quevedo.soares.leandro.blemadeeasy.BLE
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavHostController = rememberNavController()) {
+fun HomeScreen(navController: NavHostController) {
+    //val ble = BLE(componentActivity = LocalContext.current)
+
+    /*LaunchedEffect(Unit) {
+        // Realiza operaciones con los parámetros si es necesario
+    }*/
+    //viewModel.getParametersBle(ble)
 
     Scaffold(
         bottomBar = {
@@ -34,8 +42,6 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
     ) {
         HomeBottomBarNavGraph(navController)
     }
-
-
 }
 @Composable
 fun BottomBar(navController: NavHostController) {

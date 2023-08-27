@@ -50,14 +50,22 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            exclude("META-INF/LICENSE.md")
+            exclude("META-INF/NOTICE.md")
         }
     }
 }
 
 dependencies {
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.1")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.7.0")
-    implementation("com.google.firebase:firebase-storage-ktx:20.2.1")
+
+    // Import the BoM for the Firebase platform
+    implementation( platform("com.google.firebase:firebase-bom:32.2.2"))
+
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
+    implementation("org.chromium.net:cronet-embedded:113.5672.61")
     val nav_version = "2.5.3"
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -90,6 +98,11 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
     //GSON
     implementation ("com.google.code.gson:gson:2.9.0")
+    //BLE
+    implementation ("com.github.LeandroSQ:android-ble-made-easy:1.8.2")
+    //ASYNC image
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation ("commons-io:commons-io:2.7")
 
 }
 // Allow references to generated code

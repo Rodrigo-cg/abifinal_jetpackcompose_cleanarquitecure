@@ -12,11 +12,17 @@ import com.abi.abifinal.domain.use_cases.auth.Login
 import com.abi.abifinal.domain.use_cases.auth.Logout
 import com.abi.abifinal.domain.use_cases.auth.SingUp
 import com.abi.abifinal.domain.use_cases.users.Create
+import com.abi.abifinal.domain.use_cases.users.GetGpsRealTime
+import com.abi.abifinal.domain.use_cases.users.GetParametersBle
 import com.abi.abifinal.domain.use_cases.users.GetUserById
 import com.abi.abifinal.domain.use_cases.users.SaveImage
+import com.abi.abifinal.domain.use_cases.users.SendMsmSos
 import com.abi.abifinal.domain.use_cases.users.Update
+import com.abi.abifinal.domain.use_cases.users.UpdateSensors
 import com.abi.abifinal.domain.use_cases.users.UsersUseCases
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -34,28 +40,22 @@ import javax.inject.Singleton
 @Module
 object AppModule {
     @Provides
-    @Singleton
     fun provideFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
 
     @Provides
-    @Singleton
     @Named(USERS)
     fun providesUsersRef(db: FirebaseFirestore): CollectionReference = db.collection(USERS)
 
     @Provides
-    @Singleton
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
-    @Singleton
-    fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
+    fun provideAuthRepository(impl: AuthRepositoryImpl):AuthRepository = impl
 
     @Provides
-    @Singleton
     fun providesUserRepository(impl: UsersRepositoryImpl): UsersRepository = impl
 
     @Provides
-    @Singleton
     fun provideAuthCases(repository: AuthRepository) = AuthUseCase(
         getCurrentUser = GetCurrentUser(repository),
         login = Login(repository),
@@ -64,35 +64,34 @@ object AppModule {
     )
 
     @Provides
-    @Singleton
     fun provideUsersUseCases(repository: UsersRepository) = UsersUseCases(
         create = Create(repository),
         getUserById = GetUserById(repository),
         update = Update(repository),
-        saveImage = SaveImage(repository)
+        saveImage = SaveImage(repository),
+        getParametersBle = GetParametersBle(repository)
     )
 
     @Provides
-    @Singleton
+    fun provideFirebaseDatabase(): FirebaseDatabase=FirebaseDatabase.getInstance()
+
+    @Provides
     fun provideFirebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance()
 
     @Provides
-    @Singleton
     @Named(USERS)
-    fun provideStorageUserRed(storage: FirebaseStorage): StorageReference = storage.reference.child(USERS)
+    fun provideStorageUserRed(storage: FirebaseStorage):StorageReference = storage.reference.child(USERS)
 
     @Provides
-    @Singleton
     @Named(POST)
     fun providesPostRef(db: FirebaseFirestore): CollectionReference = db.collection(POST)
 
     @Provides
-    @Singleton
     @Named(POST)
     fun provideStoragePostRed(storage: FirebaseStorage):StorageReference = storage.reference.child(POST)
 
-    /*@Provides
-    fun providePostRepository(impl: PostRepoImpl): PostRepository = impl
+/*    @Provides
+    fun providePostRepository(impl: PostRepositoryImpl): PostRepository = impl
 
     @Provides
     fun providePostUseCases(repository: PostRepository) = PostUseCases(

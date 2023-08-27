@@ -9,9 +9,37 @@ data class User (
     var username: String = "",
     var email: String= "",
     var password: String= "",
-    var image: String = ""
+    var image: String = "",
+    var age: String = "",
+    var phoneNumber: String = "",
+    var fullName: String = "",
+    var dni: String="",
 
-){
+ //Sensores
+    var temperature: String="",
+    var position:String="",
+    var msm:String="",
+    var bpm:String=""
+
+    ){
+    fun toJson2(): String = Gson().toJson(User(
+        id,
+        username,
+        email,
+        password,
+        age,
+        phoneNumber,
+        fullName,
+        dni,
+
+        temperature,
+        position,
+        msm,
+        bpm,
+
+        if (image != "") URLEncoder.encode(image, StandardCharsets.UTF_8.toString()) else ""
+
+    ))
     fun toJson(): String = Gson().toJson(User(
         id,
         username,

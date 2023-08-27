@@ -18,7 +18,7 @@ fun RootNavGraph(navController: NavHostController) {
         authNavGraph(navController = navController)
 
         composable(route = Graph.HOME){
-            HomeScreen()
+            HomeScreen(navController)
         }
 
     }
