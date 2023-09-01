@@ -1,6 +1,7 @@
 package com.abi.abifinal.presentation
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,15 +17,22 @@ import com.abi.abifinal.presentation.navigation.RootNavGraph
 import com.abi.abifinal.presentation.screens.login.LoginScreen
 import com.abi.abifinal.presentation.ui.theme.AbifinalTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import quevedo.soares.leandro.blemadeeasy.BLE
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
+    private lateinit var ble: BLE // Declarar BLE como una propiedad de la clase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ble = BLE(componentActivity = this)
+
         setContent {
             AbifinalTheme(darkTheme = true) {
                 // A surface container using the 'background' color from the theme

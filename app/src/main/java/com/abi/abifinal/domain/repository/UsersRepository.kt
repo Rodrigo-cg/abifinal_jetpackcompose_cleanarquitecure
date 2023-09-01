@@ -1,6 +1,7 @@
 package com.abi.abifinal.domain.repository
 
 import android.content.Context
+import androidx.activity.ComponentActivity
 import com.abi.abifinal.domain.model.Response
 import com.abi.abifinal.domain.model.User
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,7 @@ interface UsersRepository {
     fun getUserById(id: String): Flow<User>
 
     //Sensores
-    suspend fun getParametersBle(ble: BLE):Response<Boolean>
+    suspend fun getParametersBle(componentActivity: ComponentActivity):Response<Boolean>
 
     suspend fun getGpsRealTime():Flow<User>
 

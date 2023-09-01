@@ -3,10 +3,12 @@ package com.abi.abifinal.data.repository
 import android.content.Context
 import android.net.Uri
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import com.abi.abifinal.core.Constants
 import com.abi.abifinal.domain.model.Response
 import com.abi.abifinal.domain.model.User
 import com.abi.abifinal.domain.repository.UsersRepository
+import com.abi.abifinal.presentation.MainActivity
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.firestore.CollectionReference
@@ -86,7 +88,10 @@ class UsersRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getParametersBle(ble: BLE): Response<Boolean> {
+
+    override suspend fun getParametersBle(componentActivity: ComponentActivity): Response<Boolean> {
+        var ble=BLE(componentActivity =componentActivity)
+
         GlobalScope.launch {
             // You can specify filters for your device, being them 'macAddress', 'service' and 'name'
             val connection = ble?.scanFor(
