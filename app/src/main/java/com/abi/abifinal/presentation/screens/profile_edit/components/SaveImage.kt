@@ -19,7 +19,7 @@ fun SaveImage(viewModel: ProfileEditViewModel = hiltViewModel()) {
             viewModel.onUpdate(response.data)
         }
         is Response.Faliure ->{
-            Toast.makeText(LocalContext.current, response.exception.message ?: "Error desconocido", Toast.LENGTH_SHORT).show()
+            Toast.makeText(LocalContext.current, "error"+response.exception.message ?: "Error desconocido", Toast.LENGTH_SHORT).show()
         }
         else ->{
             Toast.makeText(LocalContext.current, "Seleccione una imagen", Toast.LENGTH_SHORT).show()

@@ -14,13 +14,13 @@ data class User (
     var phoneNumber: String = "",
     var fullName: String = "",
     var dni: String="",
-
+    var numerocontacto1: String="",
+    var numerocontacto2: String="",
  //Sensores
     var temperature: String="",
     var position:String="",
     var msm:String="",
     var bpm:String=""
-
     ){
     fun toJson2(): String = Gson().toJson(User(
         id,

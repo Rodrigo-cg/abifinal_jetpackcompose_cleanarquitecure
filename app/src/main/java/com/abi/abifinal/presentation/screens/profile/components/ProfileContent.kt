@@ -33,7 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.abi.abifinal.R
-import com.abi.abifinal.presentation.MainActivity
+import com.abi.abifinal.presentation.MainActivity2
 import com.abi.abifinal.presentation.components.DefaultButton
 import com.abi.abifinal.presentation.navigation.DetailsScreen
 import com.abi.abifinal.presentation.screens.profile.ProfileViewModel
@@ -131,7 +131,7 @@ fun ProfileContent(
             onClick = {
                 viewModel.logout()
                 activity?.finish()
-                activity?.startActivity(Intent(activity, MainActivity::class.java))
+                activity?.startActivity(Intent(activity, MainActivity2::class.java))
             },
             colorIcon = Color.White
         )

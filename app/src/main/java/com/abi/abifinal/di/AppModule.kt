@@ -1,7 +1,12 @@
 package com.abi.abifinal.di
 
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import com.abi.abifinal.core.Constants.POST
 import com.abi.abifinal.core.Constants.USERS
+import com.abi.abifinal.data.ble.SensoresRecividorBleManager
+import com.abi.abifinal.data.bleresults.SensoresRecevidorManager
 import com.abi.abifinal.data.repository.AuthRepositoryImpl
 import com.abi.abifinal.data.repository.UsersRepositoryImpl
 import com.abi.abifinal.domain.repository.AuthRepository
@@ -12,16 +17,15 @@ import com.abi.abifinal.domain.use_cases.auth.Login
 import com.abi.abifinal.domain.use_cases.auth.Logout
 import com.abi.abifinal.domain.use_cases.auth.SingUp
 import com.abi.abifinal.domain.use_cases.users.Create
-import com.abi.abifinal.domain.use_cases.users.GetGpsRealTime
+import com.abi.abifinal.domain.use_cases.users.GetCurrentUserLocationUseCase
 import com.abi.abifinal.domain.use_cases.users.GetParametersBle
 import com.abi.abifinal.domain.use_cases.users.GetUserById
 import com.abi.abifinal.domain.use_cases.users.SaveImage
-import com.abi.abifinal.domain.use_cases.users.SendMsmSos
 import com.abi.abifinal.domain.use_cases.users.Update
-import com.abi.abifinal.domain.use_cases.users.UpdateSensors
 import com.abi.abifinal.domain.use_cases.users.UsersUseCases
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,6 +36,7 @@ import com.google.firebase.storage.StorageReference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
 import javax.inject.Singleton
@@ -39,6 +44,20 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
+    @Provides
+    @Singleton
+    fun provideBluetoohAdapteEsp32(@ApplicationContext context: Context): BluetoothAdapter {
+        val manager=context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        return manager.adapter
+    }
+    @Provides
+    @Singleton
+    fun provideTempHumidityReceiveManagerEsp32(
+        @ApplicationContext context: Context,
+        bluetoothAdapter: BluetoothAdapter
+    ): SensoresRecevidorManager {
+        return SensoresRecividorBleManager(bluetoothAdapter,context)
+    }
     @Provides
     fun provideFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
 
@@ -69,7 +88,8 @@ object AppModule {
         getUserById = GetUserById(repository),
         update = Update(repository),
         saveImage = SaveImage(repository),
-        getParametersBle = GetParametersBle(repository)
+        getParametersBle = GetParametersBle(repository),
+        getCurrentUserLocationUseCase = GetCurrentUserLocationUseCase(repository)
     )
 
     @Provides
@@ -90,6 +110,16 @@ object AppModule {
     @Named(POST)
     fun provideStoragePostRed(storage: FirebaseStorage):StorageReference = storage.reference.child(POST)
 
+    @Provides
+    fun provideFusedLocationProviderClient(@ApplicationContext context: Context): FusedLocationProviderClient {
+        return LocationServices.getFusedLocationProviderClient(context)
+    }
+    @Provides
+    @Singleton
+    fun provideContext(@ApplicationContext context: Context): Context {
+        return context
+    }
+}
 /*    @Provides
     fun providePostRepository(impl: PostRepositoryImpl): PostRepository = impl
 
@@ -103,5 +133,3 @@ object AppModule {
         likePost = LikePost(repository),
         dislikePost = DislikePost(repository)
     )*/
-
-}

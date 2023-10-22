@@ -5,5 +5,6 @@ class UsersUseCases (
     val getUserById: GetUserById,
     val saveImage : SaveImage,
     val update: Update,
-    val getParametersBle: GetParametersBle
+    val getParametersBle: GetParametersBle,
+    val getCurrentUserLocationUseCase: GetCurrentUserLocationUseCase
     )

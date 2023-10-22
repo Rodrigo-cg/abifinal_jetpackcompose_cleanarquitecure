@@ -1,16 +1,20 @@
 package com.abi.abifinal.presentation.navigation
 
-import androidx.activity.ComponentActivity
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.abi.abifinal.presentation.screens.home.HomeScreen
-import com.abi.abifinal.presentation.screens.home.rememberBLE
+import quevedo.soares.leandro.blemadeeasy.BLE
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun RootNavGraph(navController: NavHostController) {
+fun RootNavGraph(navController: NavHostController,cambiaEstadoBluetooh:()->Unit
+
+
+) {
     NavHost(
         navController = navController,
         route = Graph.ROOT,
@@ -21,7 +25,7 @@ fun RootNavGraph(navController: NavHostController) {
 
         composable(route = Graph.HOME){
 
-            HomeScreen(componentActivity = componentActivity) // Pasar componentActivity aquí
+            HomeScreen(cambiaEstadoBluetooh = cambiaEstadoBluetooh) // Pasar componentActivity aquí
         }
 
     }

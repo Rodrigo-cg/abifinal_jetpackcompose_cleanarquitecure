@@ -1,16 +1,24 @@
 package com.abi.abifinal.data.repository
 
+import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
-import android.widget.Toast
+import android.os.Looper
+import android.util.Log
 import androidx.activity.ComponentActivity
 import com.abi.abifinal.core.Constants
+import com.abi.abifinal.data.location.hasLocationPermission
 import com.abi.abifinal.domain.model.Response
 import com.abi.abifinal.domain.model.User
 import com.abi.abifinal.domain.repository.UsersRepository
-import com.abi.abifinal.presentation.MainActivity
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.GlobalScope
@@ -28,7 +36,11 @@ import javax.inject.Named
 class UsersRepositoryImpl @Inject constructor(
     @Named(Constants.USERS) private val usersRef: CollectionReference,
     @Named(Constants.USERS) private val storageUsersRef: StorageReference,
+    private val locationClient: FusedLocationProviderClient,
+    private val application: Application,
+    private val context: Context
 ) : UsersRepository {
+    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
     ///Sin inyección de dependencias
     /*val firestore = Firebase.firestore
@@ -50,6 +62,7 @@ class UsersRepositoryImpl @Inject constructor(
             val map: MutableMap<String, Any> = HashMap()
             map["username"] = user.username
             map["image"] = user.image
+            map["phoneNumber"]=user.phoneNumber
             usersRef.document(user.id).update(map).await()
             Response.Succes(true)
         } catch (e: Exception) {
@@ -60,11 +73,16 @@ class UsersRepositoryImpl @Inject constructor(
 
     override suspend fun saveImage(file: File): Response<String> {
         return try {
+            if(file.toString().contains("firebase")){
+                return Response.Succes(file.toString())
 
+            }
             val fromFile = Uri.fromFile(file)
             val ref = storageUsersRef.child(file.name)
             val uploadTask = ref.putFile(fromFile).await()
             val url = ref.downloadUrl.await()
+            Log.d("url", "Datos recibidos DE url: $url")
+
             return Response.Succes(url.toString())
 
         } catch (e: Exception) {
@@ -129,13 +147,48 @@ class UsersRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getGpsRealTime(): Flow<User> {
-        TODO("Not yet implemented")
-    }
+
 
     override suspend fun sendMsmSos(): Response<Boolean> {
         TODO("Not yet implemented")
     }
 
+    @SuppressLint("MissingPermission")
+    override suspend fun getLocationUpdates(interval:Long): Flow<Location> {
+        return callbackFlow {
+            if(!context.hasLocationPermission()){
+                throw UsersRepository.LocationException("Mission location permission")
+            }
+            val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+            if(!isGpsEnabled && !isNetworkEnabled) {
+                throw UsersRepository.LocationException("GPS is disabled")
+            }
+
+            val request = LocationRequest.create()
+                .setInterval(interval)
+                .setFastestInterval(interval)
+
+            val locationCallback = object : LocationCallback() {
+                override fun onLocationResult(result: LocationResult) {
+                    super.onLocationResult(result)
+                    result.locations.lastOrNull()?.let { location ->
+                        launch { send(location) }
+                    }
+                }
+            }
+
+            locationClient.requestLocationUpdates(
+                request,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+
+            awaitClose {
+                locationClient.removeLocationUpdates(locationCallback)
+            }
+        }
+    }
 
 }

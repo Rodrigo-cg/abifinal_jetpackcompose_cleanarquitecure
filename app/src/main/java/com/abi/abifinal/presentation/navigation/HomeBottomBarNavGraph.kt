@@ -1,5 +1,7 @@
 package com.abi.abifinal.presentation.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.List
@@ -8,27 +10,31 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.abi.abifinal.presentation.screens.dashboard.DashboardScreen
+import com.abi.abifinal.presentation.screens.medicamentos.MedicamentosScreen
 import com.abi.abifinal.presentation.screens.profile.ProfileScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeBottomBarNavGraph(navController: NavHostController) {
+fun HomeBottomBarNavGraph(navController: NavHostController,cambiaEstadoBluetooh:()->Unit) {
 
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = HomeBottomBarScreen.Posts.route
+        startDestination = HomeBottomBarScreen.Dashboard.route
     ){
 
+
         composable(route = HomeBottomBarScreen.Profile.route){
-            ProfileScreen(navController)
+            ProfileScreen(navController =  navController)
         }
 
-        composable(route = HomeBottomBarScreen.Posts.route){
-            //PostsScreen(navController)
+        composable(route = HomeBottomBarScreen.Dashboard.route){
+            DashboardScreen(navController= navController, cambiaEstadoBluetooh = cambiaEstadoBluetooh)
         }
 
-        composable(route = HomeBottomBarScreen.MyPosts.route){
-            //MyPostsScreen(navController)
+        composable(route = HomeBottomBarScreen.Medicamentos.route){
+            MedicamentosScreen(navController=navController)
         }
 
         detailsNavGraph(navController)
@@ -42,19 +48,24 @@ sealed class HomeBottomBarScreen(
     var icon: ImageVector
 ) {
 
-    object Posts : HomeBottomBarScreen(
+    object Medicamentos : HomeBottomBarScreen(
         route = "posts_list",
-        tittle = "Auxilio",
+        tittle = "Mis pastillas",
         icon = Icons.Outlined.List
     )
 
-    object MyPosts : HomeBottomBarScreen(
-        route = "my_posts",
+    object Dashboard : HomeBottomBarScreen(
+        route = "my_dashboard",
         tittle = "Dashboard",
         icon = Icons.Outlined.List
     )
 
     object Profile :
-        HomeBottomBarScreen(route = "profile", tittle = "Perfil", icon = Icons.Default.Person)
+        HomeBottomBarScreen(
+            route = "profile",
+            tittle = "Perfil",
+            icon = Icons.Default.Person)
+
+
 
 }

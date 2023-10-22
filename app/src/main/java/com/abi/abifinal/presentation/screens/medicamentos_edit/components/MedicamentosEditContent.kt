@@ -1,4 +1,4 @@
-package com.abi.abifinal.presentation.screens.profile_edit.components
+package com.abi.abifinal.presentation.screens.medicamentos_edit.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
@@ -33,17 +34,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.abi.abifinal.R
 import coil.compose.AsyncImage
+import com.abi.abifinal.R
 import com.abi.abifinal.presentation.components.DefaultButton
 import com.abi.abifinal.presentation.components.DefaultTextField
 import com.abi.abifinal.presentation.components.DialogCapturePicture
+import com.abi.abifinal.presentation.screens.medicamentos_edit.MedicamentosEditViewModel
 import com.abi.abifinal.presentation.screens.profile_edit.ProfileEditViewModel
 import com.abi.abifinal.presentation.ui.theme.DarkGray500
 import com.abi.abifinal.presentation.ui.theme.Pink500
 
 @Composable
-fun ProfileEditContent(navController: NavController, viewModel: ProfileEditViewModel = hiltViewModel()) {
+fun MedicamentosEditContent(navController: NavController, viewModel: MedicamentosEditViewModel = hiltViewModel()) {
 
     //val context = LocalContext.current
     val state = viewModel.state
@@ -81,51 +83,17 @@ fun ProfileEditContent(navController: NavController, viewModel: ProfileEditViewM
                 .height(290.dp)
                 .background(Pink500),
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(70.dp))
-                if (viewModel.state.image != "" ){
-                    AsyncImage(
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .height(120.dp)
-                            .width(120.dp)
-                            .clip(CircleShape)
-                            .clickable {
-                                dialogState.value = true
-                            },
-                        model = viewModel.state.image,
-                        contentDescription = "Selected Image"
-                    )
-                }else{
-                    Image(
-                        modifier = Modifier
-                            .height(120.dp)
-                            .clickable {
-                                viewModel.pickImage()
-                                viewModel.takePhoto()
-                                dialogState.value = true
-                            },
-                        painter = painterResource(id = R.drawable.user),
-                        contentDescription = "user default image"
-                    )
-                }
-
-            }
-
         }
 
         Card(
             colors = CardDefaults.cardColors(containerColor = DarkGray500),
-            modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 220.dp)
+            modifier = Modifier.padding(start = 40.dp, end = 40.dp, top = 150.dp)
         ) {
 
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
                 Text(
-                    text = "Actualizar",
+                    text = "Complete los campos requeridos para generar horarios para que tome sus pastillas",
                     modifier = Modifier.padding(top = 40.dp),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
@@ -143,8 +111,8 @@ fun ProfileEditContent(navController: NavController, viewModel: ProfileEditViewM
                     modifier = Modifier.padding(top = 25.dp),
                     value = state.username,
                     onValueChange = { viewModel.onUsernameInput(it) },
-                    label = "Nombre de usuario",
-                    icon = Icons.Default.Person,
+                    label = "Descripcion de pastillas y/o tratamiento",
+                    icon = Icons.Default.Create,
                     keyboardType = KeyboardType.Text,
                     errorMessage = viewModel.usernameErrMsg,
                     validateField = {
@@ -156,7 +124,33 @@ fun ProfileEditContent(navController: NavController, viewModel: ProfileEditViewM
                     modifier = Modifier.padding(top = 25.dp),
                     value = state.phoneNumber,
                     onValueChange = { viewModel.onPhoneNumberInput(it) },
-                    label = "Telefono de contacto",
+                    label = "Digite el numero de dias que tomara pastillas",
+                    icon = Icons.Default.Phone,
+                    keyboardType = KeyboardType.Phone,
+                    errorMessage = viewModel.phoneNumberErrMsg,
+                    validateField = {
+                        viewModel.validatePhoneNumber()
+                    }
+                )
+
+                DefaultTextField(
+                    modifier = Modifier.padding(top = 25.dp),
+                    value = state.phoneNumber,
+                    onValueChange = { viewModel.onPhoneNumberInput(it) },
+                    label = "Digite cuantas veces repetira la pastilla durante el dia",
+                    icon = Icons.Default.Phone,
+                    keyboardType = KeyboardType.Phone,
+                    errorMessage = viewModel.phoneNumberErrMsg,
+                    validateField = {
+                        viewModel.validatePhoneNumber()
+                    }
+                )
+
+                DefaultTextField(
+                    modifier = Modifier.padding(top = 25.dp),
+                    value = state.phoneNumber,
+                    onValueChange = { viewModel.onPhoneNumberInput(it) },
+                    label = "Repeticiones de pastillas por dia",
                     icon = Icons.Default.Phone,
                     keyboardType = KeyboardType.Phone,
                     errorMessage = viewModel.phoneNumberErrMsg,

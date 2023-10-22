@@ -6,6 +6,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     id ("com.google.gms.google-services")
     id( "kotlin-kapt")
+    id("kotlin-parcelize")
+
 }
 
 android {
@@ -54,6 +56,9 @@ android {
             exclude("META-INF/NOTICE.md")
         }
     }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
@@ -66,6 +71,9 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("org.chromium.net:cronet-embedded:113.5672.61")
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     val nav_version = "2.5.3"
 
     implementation("androidx.core:core-ktx:1.9.0")
@@ -103,7 +111,10 @@ dependencies {
     //ASYNC image
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation ("commons-io:commons-io:2.7")
-
+    //Permissions
+    implementation ("com.google.accompanist:accompanist-permissions:0.21.1-beta")
+    // Location Services
+    implementation ("com.google.android.gms:play-services-location")
 }
 // Allow references to generated code
 kapt {

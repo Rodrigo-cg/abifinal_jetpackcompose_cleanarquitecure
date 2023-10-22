@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.abi.abifinal.presentation.screens.medicamentos_edit.MedicamentosEditScreen
 import com.abi.abifinal.presentation.screens.profile_edit.ProfileEditScreen
 
 fun NavGraphBuilder.detailsNavGraph(navController: NavHostController){
@@ -28,6 +29,16 @@ fun NavGraphBuilder.detailsNavGraph(navController: NavHostController){
         ){
             it.arguments?.getString("user")?.let { user ->
                 ProfileEditScreen(navController, user = user)
+            }
+        }
+        composable(
+            route = DetailsScreen.MedicamentosEdit.route,
+            arguments = listOf(navArgument("user"){
+                type = NavType.StringType
+            })
+        ){
+            it.arguments?.getString("user")?.let { user ->
+                MedicamentosEditScreen(navController, user = user)
             }
         }
 
@@ -64,6 +75,10 @@ sealed class DetailsScreen(val route: String){
 
     object ProfileEdit: DetailsScreen("profile/edit/{user}"){
         fun passUser(user: String) = "profile/edit/${user}"
+    }
+
+    object MedicamentosEdit: DetailsScreen("medicamentos/edit/{user}"){
+        fun passUser(user: String) = "medicamentos/edit/${user}"
     }
 
     object DetailPost: DetailsScreen("posts/detail/{post}"){

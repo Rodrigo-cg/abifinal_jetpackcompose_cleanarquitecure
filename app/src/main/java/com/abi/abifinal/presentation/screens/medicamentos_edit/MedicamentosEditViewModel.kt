@@ -1,4 +1,4 @@
-package com.abi.abifinal.presentation.screens.profile_edit
+package com.abi.abifinal.presentation.screens.medicamentos_edit
 
 import android.content.Context
 import android.util.Log
@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.abi.abifinal.domain.model.Response
 import com.abi.abifinal.domain.model.User
 import com.abi.abifinal.domain.use_cases.users.UsersUseCases
+import com.abi.abifinal.presentation.screens.profile_edit.ProfileEditState
 import com.abi.abifinal.presentation.utils.ComposeFileProvider
 import com.abi.abifinal.presentation.utils.ResultingActivityHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +22,7 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileEditViewModel @Inject constructor(
+class MedicamentosEditViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val usersUseCases: UsersUseCases,
     @ApplicationContext private val context: Context
